@@ -1,7 +1,11 @@
-const Header = () => {
+import './footer.scss';
+
+const Footer = () => {
   return (
-    <div>Header</div>
+    <footer>
+      <div>By namdoanx</div>
+    </footer>
   )
 }
 
-export default Header
+export default Footer;
