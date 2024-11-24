@@ -3,18 +3,26 @@ import './login.scss'
 import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from '../../components/service/apiService';
 import { useState } from 'react';
+import { doLoginAction } from '../../redux/account/accountSlide';
+import { useDispatch } from 'react-redux'
 
 const Login = () => {
   const navigate = useNavigate()
   const [isSubmit, setIsSubmit] = useState(false);
+
+  const dispatch = useDispatch()
 
   const onFinish = async (values) => {
 
     const { username, password } = values;
     setIsSubmit(true);
     const res = await postLogin(username, password);
+    console.log("check res", res)
     setIsSubmit(false);
     if (res?.data) {
+      localStorage.setItem("access_token", res.data.access_token)
+
+      dispatch(doLoginAction(res.data.user))
       message.success('Đăng nhập tài khoản thành công!');
       navigate('/')
     } else {

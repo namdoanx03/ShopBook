@@ -6,4 +6,7 @@ const postRegister = (fullName, email, password, phone) => {
 const postLogin = (username, password) => {
     return axios.post(`api/v1/auth/login`, { username, password })
 }
-export { postRegister, postLogin }
+const fetchAccount = () => { // lay thong tin nguoi dung moi khi f5
+    return axios.get(`api/v1/auth/account`)
+}
+export { postRegister, postLogin, fetchAccount }

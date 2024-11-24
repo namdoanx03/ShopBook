@@ -4,8 +4,11 @@ const baseURL = import.meta.env.VITE_BACKEND_URL
 
 const instance = axios.create({
     baseURL: baseURL,
+    withCredentials: true,//set cookies
 
 });
+instance.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } //doi voi tung request gan token vao, token nay lay tu localStorage
+
 
 //interceptor : can thiep vao truoc khi gui request va sau khi nhan response muon lam gi
 // Add a request interceptor
