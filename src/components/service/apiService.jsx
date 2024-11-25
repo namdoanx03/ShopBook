@@ -9,4 +9,7 @@ const postLogin = (username, password) => {
 const fetchAccount = () => { // lay thong tin nguoi dung moi khi f5
     return axios.get(`api/v1/auth/account`)
 }
-export { postRegister, postLogin, fetchAccount }
+const postLogout = () => { 
+    return axios.post('/api/v1/auth/logout')
+}
+export { postRegister, postLogin, fetchAccount, postLogout }

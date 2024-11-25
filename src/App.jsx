@@ -31,33 +31,18 @@ const Layout = () => {
     </>
   );
 };
-// const LayoutAdmin = () => {
-//   const isAdminRoute = window.location.pathname.startsWith('/admin');
-//   const user = useSelector(state => state.account.user);
-//   const userRole = user.role;
-
-//   return (
-//     <div className='layout-app'>
-//       {isAdminRoute && userRole === 'ADMIN' && <Header />}
-//       {/* <Header /> */}
-//       <Outlet />
-//       {/* <Footer /> */}
-//       {isAdminRoute && userRole === 'ADMIN' && <Footer />}
-
-//     </div>
-//   )
-// }
 
 
 const App = () => {
   const dispatch = useDispatch()
-  const isAuthenticated = useSelector(state => state.account.isAuthenticated)
+  const isLoading = useSelector(state => state.account.isLoading)
 
   const getAccount = async () => {
 
     if (window.location.pathname === '/login'  
       || window.location.pathname === '/register' 
-      || window.location.pathname === '') return 
+    ) 
+    return 
 
     const res = await fetchAccount()
     if (res && res.data) {
@@ -119,7 +104,7 @@ const router = createBrowserRouter([
 
   return (
     <>
-      {isAuthenticated === true || window.location.pathname === '/login' || window.location.pathname === '/register' || window.location.pathname === '/' 
+      {isLoading === false || window.location.pathname === '/login' || window.location.pathname === '/register' || window.location.pathname === '/' 
       ? 
         <RouterProvider router={router} />
       :
