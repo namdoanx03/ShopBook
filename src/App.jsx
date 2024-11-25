@@ -21,6 +21,7 @@ import ProtectedRoute from "./components/ProtectedRoute/index.jsx";
 import AdminPage from "./pages/Admin/index.jsx";
 import LayoutAdmin from "./components/Admin/LayoutAdmin.jsx";
 import './styles/reset.scss'
+import ManageUserPage from "./pages/admin/user/index.jsx";
 
 const Layout = () => {
   return (
@@ -82,8 +83,12 @@ const router = createBrowserRouter([
       </ProtectedRoute>
      },
       {
-        path: "contact",
-        element: <Contact />,
+        path: "user",
+        element:
+          <ProtectedRoute>
+            <ManageUserPage />
+          </ProtectedRoute>
+        ,
       },
       {
         path: "book",

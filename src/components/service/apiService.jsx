@@ -12,4 +12,7 @@ const fetchAccount = () => { // lay thong tin nguoi dung moi khi f5
 const postLogout = () => { 
     return axios.post('/api/v1/auth/logout')
 }
-export { postRegister, postLogin, fetchAccount, postLogout }
+const fetchListUser = (query) => {
+    return axios.get(`/api/v1/user?${query}`)
+}   
+export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser }

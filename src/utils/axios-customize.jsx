@@ -50,7 +50,8 @@ instance.interceptors.response.use(function (response) {
         && +error.response.status === 400
         && error.config.url === 'api/v1/auth/refresh') 
         {
-        window.location.href = '/login'
+        if (window.location.pathname !== '/')
+            window.location.href = '/login';
     }
     // xu li loi 401 khong xac thuc duoc nguoi dung
     //Is it possible to add a retry method to axios? #934
