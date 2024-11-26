@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Popconfirm, Button, message, notification } from 'antd';
 import InputSearch from './InputSearch';
@@ -7,6 +6,11 @@ import {  CloudUploadOutlined, DeleteTwoTone, ExportOutlined, PlusOutlined, Relo
 import { deleteUser, fetchListUser } from '../../service/apiService';
 import UserViewDetail from './UserViewDetail';
 import UserModalCreate from './UserModalCreate';
+import moment from 'moment/moment';
+import { FORMAT_DATE_DISPLAY } from '../../../utils/constant';
+import UserImport from './UserImport';
+import * as XLSX from 'xlsx';
+
 // https://stackblitz.com/run?file=demo.tsx
 
 const UserTable = () => {
@@ -22,7 +26,7 @@ const UserTable = () => {
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
-
+    const [openModalImport, setOpenModalImport] = useState(false)
 
     useEffect(() => {
         fetchUser();
@@ -75,6 +79,17 @@ const UserTable = () => {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             sorter: true
+        },
+        {
+            title: 'Ngày cập nhật',
+            dataIndex: 'updatedAt',
+            sorter: true,
+            render: (text, record, index) => {
+                return (
+                    <>{moment(record.updatedAt).format(FORMAT_DATE_DISPLAY)}</>
+                )
+            }
+
         },
         {
             title: 'Action',
@@ -137,11 +152,13 @@ const UserTable = () => {
                     <Button
                         icon={<ExportOutlined />}
                         type="primary"
+                        onClick={() => handleExportData()}
                     >Export</Button>
 
                     <Button
                         icon={<CloudUploadOutlined />}
                         type="primary"
+                        onClick={() => setOpenModalImport(true)}
                     >Import</Button>
 
                     <Button
@@ -164,6 +181,16 @@ const UserTable = () => {
 
     const handleSearch = (query) => {
         setFilter(query);
+    }
+    
+    const handleExportData = () => {
+        // https://stackoverflow.com/questions/70871254/how-can-i-export-a-json-object-to-excel-using-nextjs-react
+        if (listUser.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(listUser);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, "ExportUser.csv");
+        }
     }
 
     return (
@@ -188,7 +215,8 @@ const UserTable = () => {
                                 current: current,
                                 pageSize: pageSize,
                                 showSizeChanger: true,
-                                total: total
+                                total: total,
+                                showTotal: (total, range) => { return (<div> {range[0]}-{range[1]} trên {total} rows</div>) }
                             }
                         }
                     />
@@ -197,6 +225,7 @@ const UserTable = () => {
             <UserModalCreate
                 openModalCreate={openModalCreate}
                 setOpenModalCreate={setOpenModalCreate}
+                fetchUser={fetchUser}
             />
             <UserViewDetail
                 openViewDetail={openViewDetail}
@@ -204,6 +233,12 @@ const UserTable = () => {
                 dataViewDetail={dataViewDetail}
                 setDataViewDetail={setDataViewDetail}
             />
+            <UserImport
+                openModalImport={openModalImport}
+                setOpenModalImport={setOpenModalImport}
+                fetchUser= {fetchUser}
+            />
+
         </>
     )
 }

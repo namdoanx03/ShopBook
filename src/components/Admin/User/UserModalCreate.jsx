@@ -1,24 +1,88 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-// eslint-disable-next-line no-unused-vars
-import { Button, Modal } from 'antd';
+import { Button, Divider, Form, Input, message, Modal, notification } from 'antd';
+import { createUser } from '../../service/apiService';
 
 const UserModalCreate = (props) => {
-    // eslint-disable-next-line react/prop-types
     const { openModalCreate, setOpenModalCreate } = props;
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    const [form] = Form.useForm();
+
+    const onFinish = async (values) => {
+        const { fullName, password, email, phone } = values;
+        setIsSubmit(true)
+        const res = await createUser(fullName, password, email, phone);
+        if (res && res.data) {
+            message.success('Tạo mới user thành công');
+            form.resetFields();
+            setOpenModalCreate(false);
+            await props.fetchUser()
+        } else {
+            notification.error({
+                message: 'Đã có lỗi xảy ra',
+                description: res.message
+            })
+        }
+        setIsSubmit(false)
+    };
+
 
     return (
         <>
 
             <Modal
-                title="Basic Modal"
+                title="Thêm mới người dùng"
                 open={openModalCreate}
-                onOk={() => setOpenModalCreate(false)}
+                onOk={() => { form.submit() }}
                 onCancel={() => setOpenModalCreate(false)}
+                okText={"Tạo mới"}
+                cancelText={"Hủy"}
+                confirmLoading={isSubmit}
+
             >
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+                <Divider />
+
+                <Form
+                    form={form}
+                    name="basic"
+                    style={{ maxWidth: 600 }}
+                    onFinish={onFinish}
+                    autoComplete="off"
+                >
+                    <Form.Item
+                        labelCol={{ span: 24 }}
+                        label="Tên hiển thị"
+                        name="fullName"
+                        rules={[{ required: true, message: 'Vui lòng nhập tên hiển thị!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        labelCol={{ span: 24 }}
+                        label="Password"
+                        name="password"
+                        rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+                    <Form.Item
+                        labelCol={{ span: 24 }}
+                        label="Email"
+                        name="email"
+                        rules={[{ required: true, message: 'Vui lòng nhập email!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        labelCol={{ span: 24 }}
+                        label="Số điện thoại"
+                        name="phone"
+                        rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Form>
+
             </Modal>
         </>
     );

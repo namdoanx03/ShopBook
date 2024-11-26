@@ -18,4 +18,10 @@ const fetchListUser = (query) => {
 const deleteUser = (id) => {
     return axios.delete(`api/v1/user/${id}`)
 }
-export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser, deleteUser }
+const createUser = (fullName, password, email, phone) => {
+    return axios.post(`api/v1/user`, { fullName, password, email, phone })
+}
+const bulkCreateUser = (data) => {
+    return axios.post('/api/v1/user/bulk-create', data)
+}
+export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser, deleteUser, createUser, bulkCreateUser }
