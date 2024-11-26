@@ -5,7 +5,10 @@ import InputSearch from './InputSearch';
 
 import {  CloudUploadOutlined, DeleteTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { deleteUser, fetchListUser } from '../../service/apiService';
+import UserViewDetail from './UserViewDetail';
+import UserModalCreate from './UserModalCreate';
 // https://stackblitz.com/run?file=demo.tsx
+
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
     const [current, setCurrent] = useState(1);
@@ -16,9 +19,10 @@ const UserTable = () => {
     const [filter, setFilter] = useState("");
     const [sortQuery, setSortQuery] = useState("");
 
-    // useEffect(() => {
-    //     fetchUser();
-    // }, []);
+    const [openModalCreate, setOpenModalCreate] = useState(false);
+    const [openViewDetail, setOpenViewDetail] = useState(false);
+    const [dataViewDetail, setDataViewDetail] = useState(null);
+
 
     useEffect(() => {
         fetchUser();
@@ -46,6 +50,16 @@ const UserTable = () => {
         {
             title: 'Id',
             dataIndex: '_id',
+            // eslint-disable-next-line no-unused-vars
+            render: (text, record, index) => {
+                return (
+                    <a href='#' onClick={() => {
+                        setDataViewDetail(record);
+                        setOpenViewDetail(true);
+                    }}>{record._id}</a>
+                )
+            }
+
         },
         {
             title: 'Tên hiển thị',
@@ -133,6 +147,7 @@ const UserTable = () => {
                     <Button
                         icon={<PlusOutlined />}
                         type="primary"
+                        onClick={() => setOpenModalCreate(true)}
                     >Thêm mới</Button>
                     <Button type='ghost' onClick={() => {
                         setFilter("");
@@ -179,6 +194,16 @@ const UserTable = () => {
                     />
                 </Col>
             </Row>
+            <UserModalCreate
+                openModalCreate={openModalCreate}
+                setOpenModalCreate={setOpenModalCreate}
+            />
+            <UserViewDetail
+                openViewDetail={openViewDetail}
+                setOpenViewDetail={setOpenViewDetail}
+                dataViewDetail={dataViewDetail}
+                setDataViewDetail={setDataViewDetail}
+            />
         </>
     )
 }
