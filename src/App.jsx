@@ -21,7 +21,9 @@ import ProtectedRoute from "./components/ProtectedRoute/index.jsx";
 import AdminPage from "./pages/Admin/index.jsx";
 import LayoutAdmin from "./components/Admin/LayoutAdmin.jsx";
 import './styles/reset.scss'
-import ManageUserPage from "./pages/admin/user/index.jsx";
+import ManageUserPage from './pages/admin/user';
+import ManageBookPage from './pages/admin/book';
+
 
 const Layout = () => {
   return (
@@ -77,11 +79,12 @@ const router = createBrowserRouter([
     element: <LayoutAdmin />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: 
-      <ProtectedRoute>
-        <AdminPage />
-      </ProtectedRoute>
-     },
+      {
+        index: true, element:
+          <ProtectedRoute>
+            <AdminPage />
+          </ProtectedRoute>
+      },
       {
         path: "user",
         element:
@@ -92,8 +95,12 @@ const router = createBrowserRouter([
       },
       {
         path: "book",
-        element: <Book />,
-      }
+        element:
+          <ProtectedRoute>
+            <ManageBookPage />
+          </ProtectedRoute>
+        ,
+      },
     ],
   },
   {

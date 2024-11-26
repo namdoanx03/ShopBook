@@ -24,4 +24,17 @@ const createUser = (fullName, password, email, phone) => {
 const bulkCreateUser = (data) => {
     return axios.post('/api/v1/user/bulk-create', data)
 }
-export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser, deleteUser, createUser, bulkCreateUser }
+const updateUser = (_id, fullName, phone) => {
+    return axios.put('/api/v1/user', { _id, fullName, phone })
+}
+const fetchListBook = (query) => {
+    return axios.get(`api/v1/book?${query}`)
+}   
+const deleteBook = (id) => {
+    return axios.delete(`api/v1/book/${id}`)
+}
+const createBook = (fullName, password, email, phone) => {
+    return axios.post(`api/v1/user`, { fullName, password, email, phone })
+}
+export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser, deleteUser, createUser, 
+    bulkCreateUser, updateUser, fetchListBook, deleteBook, createBook }

@@ -3,20 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Popconfirm, Button, message, notification } from 'antd';
 import InputSearch from './InputSearch';
 
-import {  CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
-import { deleteUser, fetchListUser } from '../../service/apiService';
-import UserViewDetail from './UserViewDetail';
-import UserModalCreate from './UserModalCreate';
+import { DeleteTwoTone, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { deleteBook, fetchListBook } from '../../service/apiService';
 import moment from 'moment/moment';
 import { FORMAT_DATE_DISPLAY } from '../../../utils/constant';
-import UserImport from './UserImport';
 import * as XLSX from 'xlsx';
-import UserModalUpdate from './UserModalUpdate';
+import BookModalCreate from './BookModalCreate';
+import BookViewDetail from './BookViewDetail';
+import BookModalUpdate from './BookModalUpdate';
 
 // https://stackblitz.com/run?file=demo.tsx
 
-const UserTable = () => {
-    const [listUser, setListUser] = useState([]);
+const BookTable = () => {
+    const [listBook, setListBook] = useState([]);
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState(0);
@@ -28,16 +27,17 @@ const UserTable = () => {
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
+    // eslint-disable-next-line no-unused-vars
     const [openModalImport, setOpenModalImport] = useState(false)
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
     const [dataUpdate, setDataUpdate] = useState(null);
 
 
     useEffect(() => {
-        fetchUser();
+        fetchBook();
     }, [current, pageSize, filter, sortQuery]);
 
-    const fetchUser = async () => {
+    const fetchBook = async () => {
         setIsLoading(true)
         let query = `current=${current}&pageSize=${pageSize}`;
         if (filter) {
@@ -47,9 +47,9 @@ const UserTable = () => {
             query += `&${sortQuery}`;
         }
 
-        const res = await fetchListUser(query);
+        const res = await fetchListBook(query);
         if (res && res.data) {
-            setListUser(res.data.result);
+            setListBook(res.data.result);
             setTotal(res.data.meta.total)
         }
         setIsLoading(false)
@@ -71,18 +71,23 @@ const UserTable = () => {
 
         },
         {
-            title: 'Tên hiển thị',
-            dataIndex: 'fullName',
+            title: 'Tên sách',
+            dataIndex: 'mainText',
             sorter: true
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
+            title: 'Thể loại',
+            dataIndex: 'category',
+            sorter: true
+        },
+        {
+            title: 'Tác giả',
+            dataIndex: 'author',
             sorter: true,
         },
         {
-            title: 'Số điện thoại',
-            dataIndex: 'phone',
+            title: 'Giá tiền',
+            dataIndex: 'price',
             sorter: true
         },
         {
@@ -106,9 +111,9 @@ const UserTable = () => {
                     <>
                         <Popconfirm
                             placement="leftTop"
-                            title={"Xác nhận xóa user"}
-                            description={"Bạn có chắc chắn muốn xóa user này ?"}
-                            onConfirm={() => handleDeleteUser(record._id)}
+                            title={"Xác nhận xóa sách"}
+                            description={"Bạn có chắc chắn muốn xóa sách này ?"}
+                            onConfirm={() => handleDeleteBook(record._id)}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >
@@ -146,10 +151,10 @@ const UserTable = () => {
 
     };
 
-    const handleDeleteUser = async (userId) => {
-        const res = await deleteUser(userId);
+    const handleDeleteBook = async (userId) => {
+        const res = await deleteBook(userId);
         if (res && res.data) {
-            message.success('Xóa user thành công');
+            message.success('Xóa sách thành công');
             fetchUser();
         } else {
             notification.error({
@@ -164,19 +169,13 @@ const UserTable = () => {
     const renderHeader = () => {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Table List Users</span>
+                <span>Table List Books</span>
                 <span style={{ display: 'flex', gap: 15 }}>
                     <Button
                         icon={<ExportOutlined />}
                         type="primary"
                         onClick={() => handleExportData()}
                     >Export</Button>
-
-                    <Button
-                        icon={<CloudUploadOutlined />}
-                        type="primary"
-                        onClick={() => setOpenModalImport(true)}
-                    >Import</Button>
 
                     <Button
                         icon={<PlusOutlined />}
@@ -202,11 +201,11 @@ const UserTable = () => {
 
     const handleExportData = () => {
         // https://stackoverflow.com/questions/70871254/how-can-i-export-a-json-object-to-excel-using-nextjs-react
-        if (listUser.length > 0) {
-            const worksheet = XLSX.utils.json_to_sheet(listUser);
+        if (listBook.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(listBook);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-            XLSX.writeFile(workbook, "ExportUser.csv");
+            XLSX.writeFile(workbook, "ExportBook.csv");
         }
     }
 
@@ -224,7 +223,7 @@ const UserTable = () => {
                         loading={isLoading}
 
                         columns={columns}
-                        dataSource={listUser}
+                        dataSource={listBook}
                         onChange={onChange}
                         rowKey="_id"
                         pagination={
@@ -239,28 +238,23 @@ const UserTable = () => {
                     />
                 </Col>
             </Row>
-            <UserModalCreate
+            <BookModalCreate
                 openModalCreate={openModalCreate}
                 setOpenModalCreate={setOpenModalCreate}
-                fetchUser={fetchUser}
+                fetchBook={fetchBook}
             />
-            <UserViewDetail
+            <BookViewDetail
                 openViewDetail={openViewDetail}
                 setOpenViewDetail={setOpenViewDetail}
                 dataViewDetail={dataViewDetail}
                 setDataViewDetail={setDataViewDetail}
             />
-            <UserImport
-                openModalImport={openModalImport}
-                setOpenModalImport={setOpenModalImport}
-                fetchUser= {fetchUser}
-            />
-            <UserModalUpdate
+            <BookModalUpdate
                 openModalUpdate={openModalUpdate}
                 setOpenModalUpdate={setOpenModalUpdate}
                 dataUpdate={dataUpdate}
                 setDataUpdate={setDataUpdate}
-                fetchUser={fetchUser}
+                fetchBook={fetchBook}
             />
 
 
@@ -269,4 +263,4 @@ const UserTable = () => {
 }
 
 
-export default UserTable;
+export default BookTable;
