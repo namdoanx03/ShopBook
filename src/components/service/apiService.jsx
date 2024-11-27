@@ -33,8 +33,29 @@ const fetchListBook = (query) => {
 const deleteBook = (id) => {
     return axios.delete(`api/v1/book/${id}`)
 }
-const createBook = (fullName, password, email, phone) => {
-    return axios.post(`api/v1/user`, { fullName, password, email, phone })
+const callFetchCategory = () => { // lay ra danh sach cac the loai sach
+    return axios.get(`api/v1/database/category`)
+}
+const createBook = (thumbnail, slider, mainText, author, price, sold, quantity, category) => {
+    return axios.post(`api/v1/book`, { thumbnail, slider, mainText, author, price, sold, quantity, category})
+}
+const uploadBookImg = (fileImg) => {
+    const bodyFormData = new FormData();
+    bodyFormData.append('fileImg', fileImg);
+    return axios({
+        method: 'post',
+        url: 'api/v1/file/upload',
+        data: bodyFormData,
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "upload-type": "book"
+        },
+    });
+}
+const updateBook = (id, thumbnail, slider, mainText, author, price, sold, quantity, category) => {
+    return axios.put(`/api/v1/book/${id}`, {
+        thumbnail, slider, mainText, author, price, sold, quantity, category
+    })
 }
 export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser, deleteUser, createUser, 
-    bulkCreateUser, updateUser, fetchListBook, deleteBook, createBook }
+    bulkCreateUser, updateUser, fetchListBook, deleteBook, createBook, callFetchCategory, uploadBookImg, updateBook }
