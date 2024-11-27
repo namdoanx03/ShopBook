@@ -69,7 +69,7 @@ const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "book",
+        path: "book/:slug",
         element: <Book/>,
       }
     ],
@@ -116,7 +116,11 @@ const router = createBrowserRouter([
 
   return (
     <>
-      {isLoading === false || window.location.pathname === '/login' || window.location.pathname === '/register' || window.location.pathname === '/' 
+      {isLoading === false 
+      || window.location.pathname === '/login' 
+      || window.location.pathname === '/register' 
+      || window.location.pathname === '/' 
+      || window.location.pathname.startsWith('/book')
       ? 
         <RouterProvider router={router} />
       :
