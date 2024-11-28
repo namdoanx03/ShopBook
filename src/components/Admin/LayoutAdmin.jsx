@@ -35,11 +35,6 @@ const items = [
                 key: 'crud',
                 icon: <TeamOutlined />,
             },
-            {
-                label: 'Files1',
-                key: 'file1',
-                icon: <TeamOutlined />,
-            }
         ]
     },
     {
@@ -68,16 +63,16 @@ const LayoutAdmin = () => {
         if(res & res.data){
             dispatch(doLogoutAction())
             message.success("Đăng xuất thành công")
-            navigate('/')
+            navigate('/login')
         }
     }
     const itemsDropdown = [
         {
-            label: <label style={{ cursor: 'pointer' }}>Quản lý tài khoản</label>,
+            label: <label style={{ cursor: 'pointer' }} onClick={() => navigate('/admin/user')}>Quản lý tài khoản</label>,
             key: 'account',
         },
         {
-            label: <label style={{ cursor: 'pointer' }}>Trang  chủ</label>,
+            label: <label style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Trang  chủ</label>,
             key: 'home',
         },
         {

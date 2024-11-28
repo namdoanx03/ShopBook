@@ -76,6 +76,7 @@ const UserImport = (props) => {
             })
             setDataExcel([]);
             setOpenModalImport(false);
+            // eslint-disable-next-line react/prop-types
             props.fetchUser();
         } else {
             notification.error({

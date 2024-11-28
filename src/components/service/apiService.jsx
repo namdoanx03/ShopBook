@@ -91,6 +91,15 @@ const callUpdateUserInfo = (_id, phone, fullName, avatar) => {
 const callUpdatePassword = (email, oldpass, newpass) => {
     return axios.post(`/api/v1/user/change-password`, {email, oldpass, newpass})
 }
-export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser, deleteUser, createUser, 
-    bulkCreateUser, updateUser, fetchListBook, deleteBook, createBook, callFetchCategory, uploadBookImg, 
-    updateBook, fetchBookById, callPlaceOrder, callOrderHistory, callUpdateAvatar, callUpdateUserInfo, callUpdatePassword }
+const callFetchDashboard = () => {
+    return axios.get('/api/v1/database/dashboard')
+}
+
+const callFetchListOrder = (query) => {
+    return axios.get(`/api/v1/order?${query}`)
+}
+
+export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser, deleteUser, createUser, bulkCreateUser,
+    updateUser, fetchListBook, deleteBook, createBook, callFetchCategory, uploadBookImg, updateBook, fetchBookById, 
+    callPlaceOrder, callOrderHistory, callUpdateAvatar, callUpdateUserInfo, callUpdatePassword, callFetchDashboard,
+    callFetchListOrder}

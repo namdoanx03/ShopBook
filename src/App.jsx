@@ -26,6 +26,7 @@ import ManageBookPage from './pages/admin/book';
 import './styles/global.scss';
 import OrderPage from './pages/order';
 import HistoryPage from './pages/history';
+import AdminOrderPage from "./pages/admin/order/index.jsx";
 
 const Layout = () => {
   return (
@@ -109,6 +110,14 @@ const router = createBrowserRouter([
         element:
           <ProtectedRoute>
             <ManageBookPage />
+          </ProtectedRoute>
+        ,
+      },
+      {
+        path: "order",
+        element:
+          <ProtectedRoute>
+            <AdminOrderPage />
           </ProtectedRoute>
         ,
       },

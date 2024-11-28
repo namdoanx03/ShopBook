@@ -21,8 +21,6 @@ const Header = () => {
     const [showManageAccount, setShowManageAccount] = useState(false);
 
 
-    console.log(carts)
-
 
     const handleLogout = async() => {
         let res = await postLogout();
