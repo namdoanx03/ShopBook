@@ -23,7 +23,9 @@ import LayoutAdmin from "./components/Admin/LayoutAdmin.jsx";
 import './styles/reset.scss'
 import ManageUserPage from './pages/admin/user';
 import ManageBookPage from './pages/admin/book';
-
+import './styles/global.scss';
+import OrderPage from './pages/order';
+import HistoryPage from './pages/history';
 
 const Layout = () => {
   return (
@@ -71,7 +73,16 @@ const router = createBrowserRouter([
       {
         path: "book/:slug",
         element: <Book/>,
-      }
+      },
+      {
+        path: "order",
+        element: <OrderPage />,
+      },
+      {
+        path: "history",
+        element: <HistoryPage />,
+      },
+
     ],
   },
   {

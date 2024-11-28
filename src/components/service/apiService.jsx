@@ -60,6 +60,16 @@ const updateBook = (id, thumbnail, slider, mainText, author, price, sold, quanti
 const fetchBookById = (id) => {
     return axios.get(`api/v1/book/${id}`)
 }
+const callPlaceOrder = (data) => {
+    return axios.post('/api/v1/order', {
+        ...data
+    })
+}
+
+const callOrderHistory = () => {
+    return axios.get('/api/v1/history');
+}
 
 export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser, deleteUser, createUser, 
-    bulkCreateUser, updateUser, fetchListBook, deleteBook, createBook, callFetchCategory, uploadBookImg, updateBook, fetchBookById }
+    bulkCreateUser, updateUser, fetchListBook, deleteBook, createBook, callFetchCategory, uploadBookImg, 
+    updateBook, fetchBookById, callPlaceOrder, callOrderHistory }
