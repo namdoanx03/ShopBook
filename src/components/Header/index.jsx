@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { postLogout } from '../service/apiService';
 import { doLogoutAction } from '../../redux/account/accountSlide';
+import ManageAccount from '../Account/ManageAccount';
 
 const Header = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
@@ -17,6 +18,8 @@ const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const carts = useSelector(state => state.order.carts)
+    const [showManageAccount, setShowManageAccount] = useState(false);
+
 
     console.log(carts)
 
@@ -33,7 +36,10 @@ const Header = () => {
 
     let items = [
         {
-            label: <label style={{ cursor: 'pointer' }}>Quản lý tài khoản</label>,
+            label: <label
+                style={{ cursor: 'pointer' }}
+                onClick={() => setShowManageAccount(true)}
+            >Quản lý tài khoản</label>,
             key: 'account',
         },
         {
@@ -151,6 +157,10 @@ const Header = () => {
                 <p>Đăng xuất</p>
                 <Divider />
             </Drawer>
+            <ManageAccount
+                isModalOpen={showManageAccount}
+                setIsModalOpen={setShowManageAccount}
+            />
         </>
     )
 };

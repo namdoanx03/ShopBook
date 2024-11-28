@@ -70,6 +70,27 @@ const callOrderHistory = () => {
     return axios.get('/api/v1/history');
 }
 
+const callUpdateAvatar = (fileImg) => {
+    const bodyFormData = new FormData();
+    bodyFormData.append('fileImg', fileImg);
+    return axios({
+        method: 'post',
+        url: '/api/v1/file/upload',
+        data: bodyFormData,
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "upload-type": "avatar"
+        },
+    });
+}
+
+const callUpdateUserInfo = (_id, phone, fullName, avatar) => {
+    return axios.put(`/api/v1/user`, {_id, phone, fullName, avatar})
+}
+
+const callUpdatePassword = (email, oldpass, newpass) => {
+    return axios.post(`/api/v1/user/change-password`, {email, oldpass, newpass})
+}
 export { postRegister, postLogin, fetchAccount, postLogout, fetchListUser, deleteUser, createUser, 
     bulkCreateUser, updateUser, fetchListBook, deleteBook, createBook, callFetchCategory, uploadBookImg, 
-    updateBook, fetchBookById, callPlaceOrder, callOrderHistory }
+    updateBook, fetchBookById, callPlaceOrder, callOrderHistory, callUpdateAvatar, callUpdateUserInfo, callUpdatePassword }
