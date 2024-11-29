@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import { Button, Col, Form, Input, Row, theme } from 'antd';
@@ -28,10 +29,22 @@ const InputSearch = (props) => {
         }
 
         if (query) {
-            // eslint-disable-next-line react/prop-types
             props.handleSearch(query);
         }
 
+        //remove undefined
+        // https://stackoverflow.com/questions/25421233/javascript-removing-undefined-fields-from-an-object
+        // Object.keys(values).forEach(key => {
+        //     if (values[key] === undefined) {
+        //         delete values[key];
+        //     }
+        // });
+
+        // if (values && Object.keys(values).length > 0) {
+        //     // https://stackoverflow.com/questions/1714786/query-string-encoding-of-a-javascript-object
+        //     const params = new URLSearchParams(values).toString();
+        //     props.handleSearch(params);
+        // }
     };
 
     return (
@@ -75,12 +88,19 @@ const InputSearch = (props) => {
                         style={{ margin: '0 8px' }}
                         onClick={() => {
                             form.resetFields();
-                            // eslint-disable-next-line react/prop-types
                             props.setFilter("");
                         }}
                     >
                         Clear
                     </Button>
+                    {/* <a
+                        style={{ fontSize: 12 }}
+                        onClick={() => {
+                            setExpand(!expand);
+                        }}
+                    >
+                        {expand ? <UpOutlined /> : <DownOutlined />} Collapse
+                    </a> */}
                 </Col>
             </Row>
         </Form>

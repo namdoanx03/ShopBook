@@ -37,4 +37,5 @@ const AdminPage = () => {
         </Row>
     )
 }
+
 export default AdminPage

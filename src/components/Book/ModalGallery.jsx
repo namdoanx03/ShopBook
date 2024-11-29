@@ -1,10 +1,10 @@
+/* eslint-disable react/prop-types */
 import { Col, Image, Modal, Row } from "antd";
 import { useEffect, useRef, useState } from "react";
 import ImageGallery from 'react-image-gallery';
 import './book.scss';
 
 const ModalGallery = (props) => {
-    // eslint-disable-next-line react/prop-types
     const { isOpen, setIsOpen, currentIndex, items, title } = props;
     const [activeIndex, setActiveIndex] = useState(0);
     const refGallery = useRef(null);
@@ -38,11 +38,10 @@ const ModalGallery = (props) => {
                     />
                 </Col>
                 <Col span={8}>
-                    <div>{title}</div>
+                    <div style={{ padding: "5px 0 20px 0" }}>{title}</div>
                     <div>
                         <Row gutter={[20, 20]}>
                             {
-                                // eslint-disable-next-line react/prop-types
                                 items?.map((item, i) => {
                                     return (
                                         <Col key={`image-${i}`}>
@@ -68,5 +67,6 @@ const ModalGallery = (props) => {
         </Modal>
     )
 }
+
 
 export default ModalGallery;

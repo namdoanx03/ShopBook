@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Popconfirm, Button, message, notification } from 'antd';
@@ -28,10 +29,11 @@ const UserTable = () => {
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
-    const [openModalImport, setOpenModalImport] = useState(false)
+
+    const [openModalImport, setOpenModalImport] = useState(false);
+
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
     const [dataUpdate, setDataUpdate] = useState(null);
-
 
     useEffect(() => {
         fetchUser();
@@ -59,7 +61,6 @@ const UserTable = () => {
         {
             title: 'Id',
             dataIndex: '_id',
-            // eslint-disable-next-line no-unused-vars
             render: (text, record, index) => {
                 return (
                     <a href='#' onClick={() => {
@@ -68,7 +69,6 @@ const UserTable = () => {
                     }}>{record._id}</a>
                 )
             }
-
         },
         {
             title: 'Tên hiển thị',
@@ -89,7 +89,6 @@ const UserTable = () => {
             title: 'Ngày cập nhật',
             dataIndex: 'updatedAt',
             sorter: true,
-            // eslint-disable-next-line no-unused-vars
             render: (text, record, index) => {
                 return (
                     <>{moment(record.updatedAt).format(FORMAT_DATE_DISPLAY)}</>
@@ -99,11 +98,10 @@ const UserTable = () => {
         },
         {
             title: 'Action',
-            width: 100,
-            // eslint-disable-next-line no-unused-vars
             render: (text, record, index) => {
                 return (
                     <>
+
                         <Popconfirm
                             placement="leftTop"
                             title={"Xác nhận xóa user"}
@@ -112,25 +110,25 @@ const UserTable = () => {
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >
-                            <span style={{ cursor: "pointer" }}>
+                            <span style={{ cursor: "pointer", margin: "0 20px" }}>
                                 <DeleteTwoTone twoToneColor="#ff4d4f" />
                             </span>
                         </Popconfirm>
 
                         <EditTwoTone
-                            twoToneColor="#f57800" style={{ cursor: "pointer", marginLeft: "20px" }}
+                            twoToneColor="#f57800" style={{ cursor: "pointer" }}
                             onClick={() => {
                                 setOpenModalUpdate(true);
                                 setDataUpdate(record);
                             }}
                         />
                     </>
+
                 )
             }
         }
     ];
 
-    // eslint-disable-next-line no-unused-vars
     const onChange = (pagination, filters, sorter, extra) => {
         if (pagination && pagination.current !== current) {
             setCurrent(pagination.current)
@@ -143,7 +141,6 @@ const UserTable = () => {
             const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`;
             setSortQuery(q);
         }
-
     };
 
     const handleDeleteUser = async (userId) => {
@@ -197,6 +194,7 @@ const UserTable = () => {
     }
 
     const handleSearch = (query) => {
+        setCurrent(1)
         setFilter(query);
     }
 
@@ -209,12 +207,12 @@ const UserTable = () => {
             XLSX.writeFile(workbook, "ExportUser.csv");
         }
     }
-
     return (
         <>
             <Row gutter={[20, 20]}>
                 <Col span={24}>
-                    <InputSearch handleSearch={handleSearch}
+                    <InputSearch
+                        handleSearch={handleSearch}
                         setFilter={setFilter}
                     />
                 </Col>
@@ -236,6 +234,7 @@ const UserTable = () => {
                                 showTotal: (total, range) => { return (<div> {range[0]}-{range[1]} trên {total} rows</div>) }
                             }
                         }
+
                     />
                 </Col>
             </Row>
@@ -244,17 +243,20 @@ const UserTable = () => {
                 setOpenModalCreate={setOpenModalCreate}
                 fetchUser={fetchUser}
             />
+
             <UserViewDetail
                 openViewDetail={openViewDetail}
                 setOpenViewDetail={setOpenViewDetail}
                 dataViewDetail={dataViewDetail}
                 setDataViewDetail={setDataViewDetail}
             />
+
             <UserImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
-                fetchUser= {fetchUser}
+                fetchUser={fetchUser}
             />
+
             <UserModalUpdate
                 openModalUpdate={openModalUpdate}
                 setOpenModalUpdate={setOpenModalUpdate}
@@ -263,10 +265,10 @@ const UserTable = () => {
                 fetchUser={fetchUser}
             />
 
-
         </>
     )
 }
+
 
 
 export default UserTable;

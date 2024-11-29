@@ -1,4 +1,8 @@
 import axios from 'axios'; // ket noi backend va frontend
+import { Mutex } from "async-mutex";
+
+const mutex = new Mutex();
+
 
 const baseURL = import.meta.env.VITE_BACKEND_URL
 
@@ -12,14 +16,23 @@ instance.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.get
 
 //
 const handleRefreshToken = async () =>{
-    const res = await instance.get('api/v1/auth/refresh') // goi api refresh token
-    if (res && res.data) return res.data.access_token
-    return null
+    // const res = await instance.get('api/v1/auth/refresh') // goi api refresh token
+    // if (res && res.data) return res.data.access_token
+    // return null
+    return await mutex.runExclusive(async () => {
+        const res = await instance.get('/api/v1/auth/refresh');
+        if (res && res.data) return res.data.access_token;
+        else return null;
+    });
+
 }
 
 //interceptor : can thiep vao truoc khi gui request va sau khi nhan response muon lam gi
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
+    if (typeof window !== "undefined" && window && window.localStorage && window.localStorage.getItem('access_token')) {
+        config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('access_token');
+    }
     // Do something before request is sent
     return config;
 }, function (error) {

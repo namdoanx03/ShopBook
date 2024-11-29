@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { Col, Divider, Form, Radio, Row, message, notification } from 'antd';
@@ -32,7 +33,6 @@ const Payment = (props) => {
 
 
     const handlePlaceOrder = () => {
-        // eslint-disable-next-line no-undef
         if (!address) {
             notification.error({
                 message: "Đã có lỗi xảy ra",
@@ -174,5 +174,7 @@ const Payment = (props) => {
         </Row>
     )
 }
+
+
 
 export default Payment;

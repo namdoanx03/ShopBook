@@ -4,9 +4,9 @@ import { fetchBookById } from "../../components/service/apiService";
 import { useEffect, useState } from "react";
 
 const Book = () => {
+    const [dataBook, setDataBook] = useState()
     let location = useLocation();
 
-    const [dataBook, setDataBook] = useState()
     let params = new URLSearchParams(location.search);
     const id = params?.get("id"); // book id
 
@@ -20,11 +20,7 @@ const Book = () => {
             let raw = res.data;
             //process data
             raw.items = getImages(raw);
-
-            setTimeout(() => {
-                setDataBook(raw);
-            }, 1500)
-
+            setDataBook(raw);
         }
     }
 
@@ -40,7 +36,6 @@ const Book = () => {
                 },
             )
         }
-
         if (raw.slider) {
             raw.slider?.map(item => {
                 images.push(
@@ -55,12 +50,11 @@ const Book = () => {
         }
         return images;
     }
-
-
     return (
         <>
-            <ViewDetail dataBook={dataBook} />   
+            <ViewDetail dataBook={dataBook} />
         </>
     )
 }
+
 export default Book

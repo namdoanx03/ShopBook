@@ -1,28 +1,27 @@
 /* eslint-disable react/prop-types */
-import { Row, Col, Rate, Divider } from 'antd';
+import { Row, Col, Rate, Divider, Breadcrumb } from 'antd';
 import './book.scss';
 import ImageGallery from 'react-image-gallery';
 import { useRef, useState } from 'react';
 import ModalGallery from './ModalGallery';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { MinusOutlined, PlusOutlined, HomeOutlined } from '@ant-design/icons';
 import { BsCartPlus } from 'react-icons/bs';
 import BookLoader from './BookLoader';
 import { useDispatch } from 'react-redux';
 import { doAddBookAction } from '../../redux/order/orderSlice'
+import { Link, useNavigate } from 'react-router-dom';
 
 const ViewDetail = (props) => {
-    // eslint-disable-next-line react/prop-types
     const { dataBook } = props;
     const [isOpenModalGallery, setIsOpenModalGallery] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const refGallery = useRef(null);
     const [currentQuantity, setCurrentQuantity] = useState(1);
-    const dispatch = useDispatch();
-
-
-    // eslint-disable-next-line react/prop-types
+    const refGallery = useRef(null);
     const images = dataBook?.items ?? [];
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleOnClickImage = () => {
         //get current index onClick
@@ -32,7 +31,7 @@ const ViewDetail = (props) => {
         // refGallery?.current?.fullScreen()
     }
 
-    // eslint-disable-next-line no-unused-vars
+
     const handleChangeButton = (type) => {
         if (type === 'MINUS') {
             if (currentQuantity - 1 <= 0) return;
@@ -56,10 +55,29 @@ const ViewDetail = (props) => {
         dispatch(doAddBookAction({ quantity, detail: book, _id: book._id }))
     }
 
-
+    const handleBuyNow = (quantity, book) => {
+        dispatch(doAddBookAction({ quantity, detail: book, _id: book._id }))
+        navigate('/order');
+    }
     return (
         <div style={{ background: '#efefef', padding: "20px 0" }}>
             <div className='view-detail-book' style={{ maxWidth: 1440, margin: '0 auto', minHeight: "calc(100vh - 150px)" }}>
+                <Breadcrumb
+                    style={{ margin: '5px 0' }}
+                    items={[
+                        {
+                            // href: '#',
+                            title: <HomeOutlined />,
+                        },
+                        {
+                            title: (
+                                <Link to={'/'}>
+                                    <span>Trang Chủ</span>
+                                </Link>
+                            ),
+                        }
+                    ]}
+                />
                 <div style={{ padding: "20px", background: '#fff', borderRadius: 5 }}>
                     {dataBook && dataBook._id ?
                         <Row gutter={[20, 20]}>
@@ -94,7 +112,7 @@ const ViewDetail = (props) => {
                                         <Rate value={5} disabled style={{ color: '#ffce3d', fontSize: 12 }} />
                                         <span className='sold'>
                                             <Divider type="vertical" />
-                                            Đã bán {dataBook.sold}</span> 
+                                            Đã bán {dataBook.sold}</span>
                                     </div>
                                     <div className='price'>
                                         <span className='currency'>
@@ -120,7 +138,10 @@ const ViewDetail = (props) => {
                                             <BsCartPlus className='icon-cart' />
                                             <span>Thêm vào giỏ hàng</span>
                                         </button>
-                                        <button className='now'>Mua ngay</button>
+                                        <button
+                                            className='now'
+                                            onClick={() => handleBuyNow(currentQuantity, dataBook)}
+                                        >Mua ngay</button>
                                     </div>
                                 </Col>
                             </Col>
@@ -135,11 +156,11 @@ const ViewDetail = (props) => {
                 setIsOpen={setIsOpenModalGallery}
                 currentIndex={currentIndex}
                 items={images}
-                // eslint-disable-next-line react/prop-types
                 title={dataBook?.mainText}
             />
         </div>
     )
 }
+
 
 export default ViewDetail;

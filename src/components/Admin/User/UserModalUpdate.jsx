@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line no-unused-vars
@@ -5,7 +6,6 @@ import { Button, Divider, Form, Input, message, Modal, notification } from 'antd
 import { updateUser } from '../../service/apiService';
 
 const UserModalUpdate = (props) => {
-    // eslint-disable-next-line react/prop-types
     const { openModalUpdate, setOpenModalUpdate, dataUpdate, setDataUpdate } = props;
     const [isSubmit, setIsSubmit] = useState(false);
 
@@ -20,7 +20,6 @@ const UserModalUpdate = (props) => {
         if (res && res.data) {
             message.success('Cập nhật user thành công');
             setOpenModalUpdate(false);
-            // eslint-disable-next-line react/prop-types
             await props.fetchUser()
         } else {
             notification.error({

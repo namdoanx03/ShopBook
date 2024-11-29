@@ -1,10 +1,13 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import { Col, Divider, Form, Input, InputNumber, message, Modal, notification, Row, Select, Upload } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { callFetchCategory, createBook, uploadBookImg } from '../../service/apiService';
+
 const BookModalCreate = (props) => {
-    // eslint-disable-next-line react/prop-types
     const { openModalCreate, setOpenModalCreate } = props;
     const [isSubmit, setIsSubmit] = useState(false);
 
@@ -78,7 +81,6 @@ const BookModalCreate = (props) => {
         }
         setIsSubmit(false)
     };
-
 
     const getBase64 = (img, callback) => {
         const reader = new FileReader();
@@ -316,5 +318,6 @@ const BookModalCreate = (props) => {
         </>
     );
 };
+
 
 export default BookModalCreate;

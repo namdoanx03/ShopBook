@@ -10,7 +10,7 @@ import Home from "./components/Home/index.jsx";
 import Register from "./pages/register/index.jsx";
 import Login from "./pages/login/index.jsx";
 import { fetchAccount } from "./components/service/apiService.jsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { doGetAccountAction } from "./redux/account/accountSlide.jsx";
 import { useDispatch, useSelector } from 'react-redux'
 import Loading from "./Loading/index.jsx";
@@ -29,10 +29,12 @@ import HistoryPage from './pages/history';
 import AdminOrderPage from "./pages/admin/order/index.jsx";
 
 const Layout = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <>
-      <Header/>
-      <Outlet/>
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Outlet context={[searchTerm, setSearchTerm]} />
       <Footer/>
     </>
   );
@@ -77,11 +79,19 @@ const router = createBrowserRouter([
       },
       {
         path: "order",
-        element: <OrderPage />,
+        element:
+          <ProtectedRoute>
+            <OrderPage />
+          </ProtectedRoute>
+        ,
       },
       {
         path: "history",
-        element: <HistoryPage />,
+        element:
+          <ProtectedRoute>
+            <HistoryPage />
+          </ProtectedRoute>
+        ,
       },
 
     ],

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Badge, Descriptions, Divider, Drawer, Modal, Upload } from "antd";
 import moment from 'moment';
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
@@ -5,17 +6,11 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
 const BookViewDetail = (props) => {
-    // eslint-disable-next-line react/prop-types
     const { openViewDetail, setOpenViewDetail, dataViewDetail, setDataViewDetail } = props;
-    // console.log("check ", dataViewDetail)
-
-    const getBase64 = (file) =>
-        new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
+    const onClose = () => {
+        setOpenViewDetail(false);
+        setDataViewDetail(null);
+    }
 
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
@@ -47,8 +42,7 @@ const BookViewDetail = (props) => {
 
             setFileList([imgThumbnail, ...imgSlider])
         }
-    }, dataViewDetail)
-
+    }, [dataViewDetail])
 
     const handleCancel = () => setPreviewOpen(false);
 
@@ -62,10 +56,7 @@ const BookViewDetail = (props) => {
         setFileList(newFileList);
     }
 
-    const onClose = () => {
-        setOpenViewDetail(false);
-        setDataViewDetail(null);
-    }
+
     return (
         <>
             <Drawer
@@ -75,21 +66,21 @@ const BookViewDetail = (props) => {
                 open={openViewDetail}
             >
                 <Descriptions
-                    title="Thông tin sách"
+                    title="Thông tin Book"
                     bordered
                     column={2}
                 >
                     <Descriptions.Item label="Id">{dataViewDetail?._id}</Descriptions.Item>
                     <Descriptions.Item label="Tên sách">{dataViewDetail?.mainText}</Descriptions.Item>
                     <Descriptions.Item label="Tác giả">{dataViewDetail?.author}</Descriptions.Item>
-                    <Descriptions.Item label="Giá tiền">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
-                    .format(dataViewDetail?.price ?? 0)}</Descriptions.Item>
-                    <Descriptions.Item label="Số lượng">{dataViewDetail?.quantity}</Descriptions.Item>
-                    <Descriptions.Item label="Đã bán">{dataViewDetail?.sold}</Descriptions.Item>
+                    <Descriptions.Item label="Giá tiền">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(dataViewDetail?.price ?? 0)}</Descriptions.Item>
+                    <Descriptions.Item label="Số lượng">{dataViewDetail?.quantity ?? 0}</Descriptions.Item>
+                    <Descriptions.Item label="Đã bán">{dataViewDetail?.sold ?? 0}</Descriptions.Item>
 
                     <Descriptions.Item label="Thể loại" span={2}>
                         <Badge status="processing" text={dataViewDetail?.category} />
                     </Descriptions.Item>
+
                     <Descriptions.Item label="Created At">
                         {moment(dataViewDetail?.createdAt).format(FORMAT_DATE_DISPLAY)}
                     </Descriptions.Item>
@@ -108,6 +99,7 @@ const BookViewDetail = (props) => {
                         { showRemoveIcon: false }
                     }
                 >
+
                 </Upload>
                 <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
                     <img alt="example" style={{ width: '100%' }} src={previewImage} />
@@ -116,4 +108,5 @@ const BookViewDetail = (props) => {
         </>
     )
 }
+
 export default BookViewDetail;

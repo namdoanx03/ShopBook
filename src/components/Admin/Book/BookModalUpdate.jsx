@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import { Col, Divider, Form, Input, InputNumber, message, Modal, notification, Row, Select, Upload } from 'antd';
@@ -16,7 +18,7 @@ const BookModalUpdate = (props) => {
 
     const [loading, setLoading] = useState(false);
     const [loadingSlider, setLoadingSlider] = useState(false);
-    // eslint-disable-next-line react/prop-types, no-unused-vars
+
     const [imageUrl, setImageUrl] = useState("");
 
     const [dataThumbnail, setDataThumbnail] = useState([])
@@ -42,20 +44,16 @@ const BookModalUpdate = (props) => {
     }, [])
 
     useEffect(() => {
-        // eslint-disable-next-line react/prop-types
         if (dataUpdate?._id) {
             const arrThumbnail = [
                 {
                     uid: uuidv4(),
-                    // eslint-disable-next-line react/prop-types
                     name: dataUpdate.thumbnail,
                     status: 'done',
-                    // eslint-disable-next-line react/prop-types
                     url: `${import.meta.env.VITE_BACKEND_URL}/images/book/${dataUpdate.thumbnail}`,
                 }
             ]
 
-            // eslint-disable-next-line react/prop-types
             const arrSlider = dataUpdate?.slider?.map(item => {
                 return {
                     uid: uuidv4(),
@@ -66,19 +64,12 @@ const BookModalUpdate = (props) => {
             })
 
             const init = {
-                // eslint-disable-next-line react/prop-types
                 _id: dataUpdate._id,
-                // eslint-disable-next-line react/prop-types
                 mainText: dataUpdate.mainText,
-                // eslint-disable-next-line react/prop-types
                 author: dataUpdate.author,
-                // eslint-disable-next-line react/prop-types
                 price: dataUpdate.price,
-                // eslint-disable-next-line react/prop-types
                 category: dataUpdate.category,
-                // eslint-disable-next-line react/prop-types
                 quantity: dataUpdate.quantity,
-                // eslint-disable-next-line react/prop-types
                 sold: dataUpdate.sold,
                 thumbnail: { fileList: arrThumbnail },
                 slider: { fileList: arrSlider }
@@ -125,7 +116,6 @@ const BookModalUpdate = (props) => {
             setDataThumbnail([]);
             setInitForm(null);
             setOpenModalUpdate(false);
-            // eslint-disable-next-line react/prop-types
             await props.fetchBook()
         } else {
             notification.error({

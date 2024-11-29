@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import { Button, Col, Form, Input, Row, theme } from 'antd';
@@ -28,7 +29,6 @@ const InputSearch = (props) => {
         }
 
         if (query) {
-            // eslint-disable-next-line react/prop-types
             props.handleSearch(query);
         }
 
@@ -88,7 +88,6 @@ const InputSearch = (props) => {
                         style={{ margin: '0 8px' }}
                         onClick={() => {
                             form.resetFields();
-                            // eslint-disable-next-line react/prop-types
                             props.setFilter("");
                         }}
                     >

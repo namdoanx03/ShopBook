@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Badge, Descriptions, Drawer } from "antd";
 import moment from 'moment';
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
@@ -11,7 +12,7 @@ const UserViewDetail = (props) => {
     }
     return (
         <>
-            <Drawer 
+            <Drawer
                 title="Chức năng xem chi tiết"
                 width={"50vw"}
                 onClose={onClose}
@@ -41,4 +42,5 @@ const UserViewDetail = (props) => {
         </>
     )
 }
+
 export default UserViewDetail;

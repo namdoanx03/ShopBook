@@ -3,7 +3,7 @@ import './footer.scss';
 const Footer = () => {
   return (
     <footer>
-      <div>By namdoanx</div>
+      {/* <div>By namdoanx</div> */}
     </footer>
   )
 }

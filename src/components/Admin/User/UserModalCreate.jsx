@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Button, Divider, Form, Input, message, Modal, notification } from 'antd';
 import { createUser } from '../../service/apiService';
@@ -6,7 +8,9 @@ const UserModalCreate = (props) => {
     const { openModalCreate, setOpenModalCreate } = props;
     const [isSubmit, setIsSubmit] = useState(false);
 
+    // https://ant.design/components/form#components-form-demo-control-hooks
     const [form] = Form.useForm();
+
 
     const onFinish = async (values) => {
         const { fullName, password, email, phone } = values;
@@ -26,7 +30,6 @@ const UserModalCreate = (props) => {
         setIsSubmit(false)
     };
 
-
     return (
         <>
 
@@ -38,7 +41,6 @@ const UserModalCreate = (props) => {
                 okText={"Tạo mới"}
                 cancelText={"Hủy"}
                 confirmLoading={isSubmit}
-
             >
                 <Divider />
 
@@ -82,10 +84,10 @@ const UserModalCreate = (props) => {
                         <Input />
                     </Form.Item>
                 </Form>
-
             </Modal>
         </>
     );
 };
+
 
 export default UserModalCreate;

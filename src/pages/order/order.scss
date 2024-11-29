@@ -1,6 +1,6 @@
 .order-container {
     min-height: calc(100vh - 145px);
-    
+
     .order-book {
         display      : flex;
         gap          : 30px;
@@ -31,12 +31,14 @@
 
         }
     }
+
     .order-book-empty {
         background   : white;
         padding      : 20px;
         border-radius: 5px;
         min-height   : 400px;
     }
+
     .order-sum {
         display         : flex;
         flex-direction  : column;

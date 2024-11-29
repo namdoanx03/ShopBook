@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { FaReact } from 'react-icons/fa'
 import { FiShoppingCart } from 'react-icons/fi';
 import { VscSearchFuzzy } from 'react-icons/vsc';
-import { Divider, Badge, Drawer, message, Avatar, Popover } from 'antd';
+import { Divider, Badge, Drawer, message, Avatar, Popover, Empty } from 'antd';
 import './header.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, Space } from 'antd';
@@ -11,24 +12,21 @@ import { postLogout } from '../service/apiService';
 import { doLogoutAction } from '../../redux/account/accountSlide';
 import ManageAccount from '../Account/ManageAccount';
 
-const Header = () => {
+const Header = (props) => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const isAuthenticated = useSelector(state => state.account.isAuthenticated);
     const user = useSelector(state => state.account.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const carts = useSelector(state => state.order.carts)
+    const carts = useSelector(state => state.order.carts);
     const [showManageAccount, setShowManageAccount] = useState(false);
 
-
-
-    const handleLogout = async() => {
-        let res = await postLogout();
-        if(res && res.data){
+    const handleLogout = async () => {
+        const res = await postLogout();
+        if (res && res.data) {
             dispatch(doLogoutAction());
             message.success('Đăng xuất thành công');
             navigate('/')
-
         }
     }
 
@@ -53,7 +51,7 @@ const Header = () => {
         },
 
     ];
-    if (user?.role === 'ADMIN') { //user dc lay tu redux
+    if (user?.role === 'ADMIN') {
         items.unshift({
             label: <Link to='/admin'>Trang quản trị</Link>,
             key: 'admin',
@@ -77,15 +75,19 @@ const Header = () => {
                             </div>
                         )
                     })}
-
                 </div>
-                <div className='pop-cart-footer'>
-                    <button onClick={() => navigate('/order')}>Xem giỏ hàng</button>
-                </div>
+                {carts.length > 0 ?
+                    <div className='pop-cart-footer'>
+                        <button onClick={() => navigate('/order')}>Xem giỏ hàng</button>
+                    </div>
+                    :
+                    <Empty
+                        description="Không có sản phẩm trong giỏ hàng"
+                    />
+                }
             </div>
         )
     }
-
     return (
         <>
             <div className='header-container'>
@@ -96,12 +98,15 @@ const Header = () => {
                         }}>☰</div>
                         <div className='page-header__logo'>
                             <span className='logo'>
-                                <span onClick={() => navigate('/')}> <FaReact className='rotate icon-react' /> Namdoanx</span>
+                                <span onClick={() => navigate('/')}> <FaReact className='rotate icon-react' />Namdoanx</span>
+
                                 <VscSearchFuzzy className='icon-search' />
                             </span>
                             <input
                                 className="input-search" type={'text'}
                                 placeholder="Bạn tìm gì hôm nay"
+                                value={props.searchTerm}
+                                onChange={(e) => props.setSearchTerm(e.target.value)}
                             />
                         </div>
 
@@ -135,7 +140,6 @@ const Header = () => {
                                             <Avatar src={urlAvatar} />
                                             {user?.fullName}
                                         </Space>
-
                                     </Dropdown>
                                 }
                             </li>
@@ -162,5 +166,6 @@ const Header = () => {
         </>
     )
 };
+
 
 export default Header;

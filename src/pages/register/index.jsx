@@ -6,30 +6,27 @@ import { useState } from 'react';
 
 
 const Register = () => {
-
     const navigate = useNavigate();
-
     const [isSubmit, setIsSubmit] = useState(false);
 
     const onFinish = async (values) => {
         const { fullName, email, password, phone } = values;
-        setIsSubmit(true)
-        let res = await postRegister(fullName, email, password, phone)
-        // console.log("check", res)
-        setIsSubmit(false)
-        if(res?.data?._id){
-            message.success('Đăng ký thành công')
-            navigate("/login")
-        }else{
+        setIsSubmit(true);
+        const res = await postRegister(fullName, email, password, phone);
+        setIsSubmit(false);
+        if (res?.data?._id) {
+            message.success('Đăng ký tài khoản thành công!');
+            navigate('/login')
+        } else {
             notification.error({
                 message: "Có lỗi xảy ra",
                 description:
                     res.message && Array.isArray(res.message) ? res.message[0] : res.message,
                 duration: 5
-
             })
         }
-    }
+    };
+
 
     return (
         <div className="register-page">
@@ -85,7 +82,7 @@ const Register = () => {
                             <Form.Item
                             // wrapperCol={{ offset: 6, span: 16 }}
                             >
-                                <Button type="primary" htmlType="submit" loading={isSubmit} >
+                                <Button type="primary" htmlType="submit" loading={isSubmit}>
                                     Đăng ký
                                 </Button>
                             </Form.Item>
@@ -102,4 +99,5 @@ const Register = () => {
         </div>
     )
 }
+
 export default Register
